@@ -67,11 +67,24 @@ public class BubbleView extends ImageView implements View.OnTouchListener{
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         // handle multi touch events
-        for (int n = 0; n < event.getPointerCount(); n++) {
+        if(event.getPointerCount() > 1)
+            for (int n = 0; n < event.getPointerCount(); n++) {
+                bubbleList.add(new Bubble(
+                        (int) event.getX(n),
+                        (int) event.getY(n),
+                        (int) (Math.random() * 50 + 50)));
+            }
+        else{ // if only one finger is on the screen
             bubbleList.add(new Bubble(
-                    (int) event.getX(n),
-                    (int) event.getY(n),
+                    (int) event.getX(),
+                    (int) event.getY(),
                     (int) (Math.random() * 50 + 50)));
+            if (bubbleList.size() > 1){
+                bubbleList.get(bubbleList.size() - 1).xspeed =
+                        bubbleList.get(bubbleList.size() -2).xspeed;
+                bubbleList.get(bubbleList.size() - 1).yspeed =
+                        bubbleList.get(bubbleList.size() -2).yspeed;
+            }
         }
         return true;
     }
